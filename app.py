@@ -15,6 +15,47 @@ if not os.path.exists(output):
 # Load the model and structure
 model = joblib.load("pollution_model.pkl")
 model_cols = joblib.load("model_columns.pkl")
+# Streamlit page configuration
+st.set_page_config(page_title="Water Pollutants Predictor", layout="centered")
+
+# Page header
+st.markdown("""
+    <div style="background-color:#0d6efd;padding:1rem 2rem;border-radius:8px">
+        <h2 style="color:white;text-align:center;">Water Pollutants Predictor</h2>
+        <p style="color:white;text-align:center;">Enter the station and year to predict key water pollutants</p>
+    </div>
+""", unsafe_allow_html=True)
+
+# Input section
+st.markdown("### Enter Input Details")
+col1, col2 = st.columns(2)
+
+with col1:
+    year_input = st.number_input("Year", min_value=2000, max_value=2100, value=2022)
+
+with col2:
+    station_id = st.text_input("Station ID", value='1')
+
+# Predict button
+if st.button("Predict"):
+    if not station_id:
+        st.warning("Please enter a valid Station ID.")
+    else:
+        input_df = pd.DataFrame({'year': [year_input], 'id': [station_id]})
+        input_encoded = pd.get_dummies(input_df, columns=['id'])
+
+        for col in model_cols:
+            if col not in input_encoded.columns:
+                input_encoded[col] = 0
+        input_encoded = input_encoded[model_cols]
+
+        predicted_pollutants = model.predict(input_encoded)[0]
+        pollutants = ['O₂ (Oxygen)', 'NO₃ (Nitrate)', 'NO₂ (Nitrite)', 'SO₄ (Sulfate)', 'PO₄ (Phosphate)', 'Cl (Chloride)']
+
+        # Display results
+        st.markdown("### Prediction Results")
+        for pollutant, val in zip(pollutants, predicted_pollutants):
+            st.write(f"**{pollutant}:** {val:.2f} mg/L")
 
 # Let's create an User interface
 st.title("Water Pollutants Predictor")
