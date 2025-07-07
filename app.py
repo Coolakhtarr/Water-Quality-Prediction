@@ -4,6 +4,15 @@ import numpy as np
 import joblib
 import pickle
 import streamlit as st
+import os
+import gdown
+
+file_id = '18RJzu35vyuMgpcAE590u1IaDvHY3-SWq'
+url = f'https://drive.google.com/uc?id={file_id}'
+output = 'pollution_model.pkl'
+
+if not os.path.exists(output):
+    gdown.download(url, output, quiet=False)
 
 # Load the model and structure
 model = joblib.load("pollution_model.pkl")
