@@ -6,15 +6,11 @@ import pickle
 import streamlit as st
 import os
 import gdown
-
-file_id = '18RJzu35vyuMgpcAE590u1IaDvHY3-SWq'
-url = f'https://drive.google.com/uc?id={file_id}'
-output = 'pollution_model.pkl'
-
+# Download the model if not present
+file_id = "18RJzu35vyuMgpcAE590u1IaDvHY3-SWq"
+output = "pollution_model.pkl"
 if not os.path.exists(output):
-    gdown.download(url, output, quiet=False)
-# Load the model from the file
-model = joblib.load("pollution_model.pkl")
+    gdown.download(f"https://drive.google.com/uc?id={file_id}", output, quiet=False)
 # Load the model and structure
 model = joblib.load("pollution_model.pkl")
 model_cols = joblib.load("model_columns.pkl")
