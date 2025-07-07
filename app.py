@@ -13,7 +13,8 @@ output = 'pollution_model.pkl'
 
 if not os.path.exists(output):
     gdown.download(url, output, quiet=False)
-
+# Load the model from the file
+model = joblib.load("pollution_model.pkl")
 # Load the model and structure
 model = joblib.load("pollution_model.pkl")
 model_cols = joblib.load("model_columns.pkl")
