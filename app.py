@@ -11,6 +11,7 @@ file_id = "18RJzu35vyuMgpcAE590u1IaDvHY3-SWq"
 output = "pollution_model.pkl"
 if not os.path.exists(output):
     gdown.download(f"https://drive.google.com/uc?id={file_id}", output, quiet=False)
+# trigger rebuild
 # Load the model and structure
 model = joblib.load("pollution_model.pkl")
 model_cols = joblib.load("model_columns.pkl")
